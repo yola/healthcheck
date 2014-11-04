@@ -4,6 +4,9 @@ import os.path
 
 class HealthCheck(object):
     """Base class for all checks."""
+
+    __metaclass__ = abc.ABCMeta
+
     check_id = None
 
     def __init__(self, is_critical=True, check_id=None):
@@ -47,7 +50,6 @@ class HealthCheck(object):
         self.is_ok
         return self._details
 
-    @abc.abstractmethod
     def as_dict(self):
         return {'status': 'ok' if self.is_ok else 'FAILED',
                 'details': self.details}
@@ -60,18 +62,17 @@ class ListHealthCheck(HealthCheck):
     ------
         See examples are below - DjangoDBsHealthCheck and FilesExistHealthCheck
     """
+    __metaclass__ = abc.ABCMeta
 
-    @abc.abstractmethod
     def __init__(self, items=None, **kwargs):
         super(ListHealthCheck, self).__init__(**kwargs)
 
-        if not items and not hasattr(self, 'items'):
+        if not items and not self.items:
             raise ValueError('You have to specify items inside class or '
                              'pass items list on on object construction')
 
         self._items = items if items is not None else self.items
 
-    @abc.abstractmethod
     def run(self):
         self._ok = True
         self._details = {}
@@ -147,14 +148,14 @@ class HealthChecker(object):
         self._checks = self._validate_checks(checks)
 
     def _validate_checks(self, checks):
-        if len(set([c.check_id for c in checks])) < len(checks):
-            raise ValueError('Duplicate check IDs detected.')
-
         for check in checks:
             if not isinstance(check, HealthCheck):
                 raise ValueError(
                     'HealthChecker requires a list of '
                     'HealthCheck subclasses, {0} passed'.format(check))
+
+        if len(set([c.check_id for c in checks])) < len(checks):
+            raise ValueError('Duplicate check IDs detected.')
 
         return checks
 
