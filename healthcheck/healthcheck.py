@@ -69,7 +69,7 @@ class ListHealthCheck(HealthCheck):
 
         if not items and not self.items:
             raise ValueError('You have to specify items inside class or '
-                             'pass items list on on object construction')
+                             'pass items list on object construction')
 
         self._items = items if items is not None else self.items
 
