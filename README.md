@@ -50,3 +50,8 @@ As a result, URL handled by this view will return data like this:
         }
 }
 ```
+
+Running Tests
+-------------
+
+cd healthcheck; nosetests
