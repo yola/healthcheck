@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from unittest2 import TestCase
 
-from mock import Mock, patch
+from mock import patch
 
 from healthcheck import (HealthChecker, HealthCheck, ListHealthCheck,
                          FilesExistHealthCheck, FilesDontExistHealthCheck)
