@@ -32,7 +32,8 @@ class TestHealthCheck(TestCase):
 
     def test_cant_create_healthcheck_without_id(self):
         class MyCheck(HealthCheck):
-            def run(self): pass
+            def run(self):
+                pass
 
         self.assertRaisesRegexp(ValueError, 'You must specify check_id',
                                 MyCheck)
@@ -70,15 +71,15 @@ class TestHealthCheck(TestCase):
         self.check.mock_ok = True
         self.check.mock_details = 'details'
         self.check.run()
-        self.assertEqual(self.check.as_dict(),  {'details': 'details',
-                                                 'status': 'ok'})
+        self.assertEqual(self.check.as_dict(), {'details': 'details',
+                                                'status': 'ok'})
 
     def test_as_dict_works_correctly_if_check_fails(self):
         self.check.mock_ok = False
         self.check.mock_details = 'details'
         self.check.run()
-        self.assertEqual(self.check.as_dict(),  {'details': 'details',
-                                                 'status': 'FAILED'})
+        self.assertEqual(self.check.as_dict(), {'details': 'details',
+                                                'status': 'FAILED'})
 
 
 class MyListHealthCheck(ListHealthCheck):
@@ -145,6 +146,7 @@ class TestFilesExistHealthCheck(TestCase):
         self.assertEqual(check.details, {'file1': 'exists',
                                          'file2': 'NO SUCH FILE'})
 
+
 class TestFilesDontExistHealthCheck(TestCase):
     @patch('os.path.isfile')
     def test_ok_if_all_files_exist(self, is_file_mock):
@@ -165,6 +167,7 @@ class TestFilesDontExistHealthCheck(TestCase):
         self.assertFalse(check.is_ok)
         self.assertEqual(check.details, {'file1': 'no such file',
                                          'file2': 'FILE EXISTS'})
+
 
 class TestHealthChecker(TestCase):
     def setUp(self):
