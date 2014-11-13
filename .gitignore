@@ -1,0 +1,27 @@
+# Compilation artifacts, objects, etc.
+*.DS_Store
+*.mo
+*.pyc
+*.swp
+*.tmp
+/dist
+/build
+/reports
+/test_build
+/virtualenv
+/virtualenv.tar.gz
+
+# Ignore data directory (used for persistent files)
+/data
+
+# Collected static files
+/collected_static
+
+# Local configurations
+/deploy/configuration/local/*
+
+# Ignore configurator output
+/configuration.json
+
+# Don't assume everyone likes to automate their tests the same way:
+/tube.py
