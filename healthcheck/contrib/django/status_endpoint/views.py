@@ -14,7 +14,7 @@ def status(request):
         checks.append(DjangoDBsHealthCheck())
 
     files_to_check = getattr(
-        settings, 'STATUS_CHECK_FILES', ('/etc/yola/quiesce',))
+        settings, 'STATUS_CHECK_FILES')
     if files_to_check:
         checks.append(
             FilesDontExistHealthCheck(

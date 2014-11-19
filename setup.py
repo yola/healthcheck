@@ -10,5 +10,11 @@ setup(
     author_email='engineers@yola.com',
     license='MIT (Expat)',
     url=healthcheck.__url__,
-    packages=find_packages(exclude='tests'),
+    packages=find_packages(exclude=('tests', '*.tests')),
+    tests_require=[
+        'Django>=1.4',
+        'mock<2.0.0',
+        'nose<2.0.0',
+        'unittest2<1.0.0',
+    ],
 )
