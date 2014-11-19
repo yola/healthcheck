@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from setuptools import setup
+from setuptools import find_packages, setup
 import healthcheck
 
 setup(
@@ -9,6 +9,5 @@ setup(
     author='Yola',
     author_email='engineers@yola.com',
     url=healthcheck.__url__,
-    packages=['healthcheck'],
+    packages=find_packages(exclude='tests'),
 )
-
