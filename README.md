@@ -3,7 +3,7 @@ HealthCheck
 
 Classes and Django apps, which help Yola services do health checks.
 
-Using the library directly (from SBBE):
+Using the library directly:
 --------------------
 
 ```
