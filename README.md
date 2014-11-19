@@ -66,8 +66,7 @@ Using the Django app:
 2. Include the polls URLconf in your project urls.py like this:
 
 ```
-    from healthcheck.contrib.django import status_endpoint
-    url_patterns += url(r'^status/', status_endpoint.urls())
+    url(r'^status/', include('healthcheck.contrib.django.status_endpoint.urls'))
 ```
 
 3. Visit http://127.0.0.1:8000/status/ to see the output of the healthchecks.
