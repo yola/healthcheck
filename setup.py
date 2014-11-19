@@ -8,6 +8,7 @@ setup(
     description=healthcheck.__doc__,
     author='Yola',
     author_email='engineers@yola.com',
+    license='MIT (Expat)',
     url=healthcheck.__url__,
     packages=find_packages(exclude='tests'),
 )
