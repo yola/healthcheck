@@ -4,7 +4,7 @@ from django.conf import settings
 from django.http import HttpResponse, HttpResponseServerError
 
 from healthcheck.healthcheck import (
-    HealthChecker, DjangoDBsHealthCheck, FilesDontExistHealthCheck)
+    DjangoDBsHealthCheck, FilesDontExistHealthCheck, HealthChecker)
 
 
 def status(request):

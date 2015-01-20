@@ -4,7 +4,7 @@ import os
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import connections
-from django.test import override_settings, TestCase
+from django.test import TestCase, override_settings
 from django.test.client import Client
 
 from healthcheck.contrib.django.status_endpoint import views
