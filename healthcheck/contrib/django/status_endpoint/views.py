@@ -1,12 +1,14 @@
 import json
 
 from django.conf import settings
+from django.views.decorators.http import require_http_methods
 from django.http import HttpResponse, HttpResponseServerError
 
 from healthcheck.healthcheck import (
     DjangoDBsHealthCheck, FilesDontExistHealthCheck, HealthChecker)
 
 
+@require_http_methods(['GET'])
 def status(request):
     checks = []
 
