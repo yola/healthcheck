@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import connections
 from django.test import TestCase, override_settings
-from django.test.client import Client
+from django.test.client import RequestFactory
 
 from healthcheck.contrib.django.status_endpoint import views
 
@@ -35,12 +35,16 @@ if not settings.configured:
 class StatusEndpointViewsTestCase(TestCase):
     urls = 'healthcheck.contrib.django.status_endpoint.urls'
 
+    def setUp(self):
+        self.factory = RequestFactory()
+
     @override_settings(
         STATUS_CHECK_DBS=True,
         STATUS_CHECK_FILES=('/etc/quiesce',)
     )
     def test_default_checks(self):
-        response = Client().get(reverse(views.status))
+        request = self.factory.get(reverse(views.status))
+        response = views.status(request)
         self.assertEqual(response.status_code, 200)
 
     @override_settings(
@@ -48,7 +52,8 @@ class StatusEndpointViewsTestCase(TestCase):
         STATUS_CHECK_FILES=()
     )
     def test_dont_check_files(self):
-        response = Client().get(reverse(views.status))
+        request = self.factory.get(reverse(views.status))
+        response = views.status(request)
         response_json = json.loads(response.content)
         self.assertTrue(
             "quiesce file doesn't exist" not in response_json)
@@ -66,7 +71,8 @@ class StatusEndpointViewsTestCase(TestCase):
     )
     def test_no_checks_raises_500(self):
         # Pending related issue: https://github.com/yola/healthcheck/issues/10
-        response = Client().get(reverse(views.status))
+        request = self.factory.get(reverse(views.status))
+        response = views.status(request)
         response_json = json.loads(response.content)
         self.assertTrue(
             "quiesce file doesn't exist" not in response_json)
