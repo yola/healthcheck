@@ -2,6 +2,9 @@
 from setuptools import find_packages, setup
 import healthcheck
 
+
+test_requirements = open('requirements.txt').read().split('\n')
+
 setup(
     name='healthcheck',
     version=healthcheck.__version__,
@@ -11,10 +14,6 @@ setup(
     license='MIT (Expat)',
     url=healthcheck.__url__,
     packages=find_packages(exclude=('tests', '*.tests')),
-    tests_require=[
-        'Django>=1.4',
-        'mock<2.0.0',
-        'nose<2.0.0',
-        'unittest2<1.0.0',
-    ],
+    setup_requires=['nose < 2.0.0'],
+    tests_require=test_requirements,
 )
