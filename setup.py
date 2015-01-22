@@ -2,8 +2,8 @@
 from setuptools import find_packages, setup
 import healthcheck
 
-
-test_requirements = open('requirements.txt').read().split('\n')
+with open('requirements.txt') as requirements_file:
+    test_requirements = requirements_file.readlines()
 
 setup(
     name='healthcheck',
