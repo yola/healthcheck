@@ -14,6 +14,6 @@ setup(
     license='MIT (Expat)',
     url=healthcheck.__url__,
     packages=find_packages(exclude=('tests', '*.tests')),
-    setup_requires=['nose < 2.0.0'],
     tests_require=test_requirements,
+    test_suite='nose.collector',
 )

@@ -95,4 +95,4 @@ Using the Django app:
 Running Tests
 -------------
 
-`cd healthcheck; nosetests`
+`cd healthcheck; python setup.py test`
