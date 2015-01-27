@@ -1,5 +1,9 @@
 # [Changelog](https://github.com/yola/healthcheck)
 
+## 0.0.4
+* Add `healthcheck.contrib.django.status_endpoint` contrib app, for easily
+  using the library from a Django app.
+
 ## 0.0.3
 * Fixed incorrect usage of @abstractmethod decorator. It doesn't work without
   __metaclass__ = abc.ABCMeta
