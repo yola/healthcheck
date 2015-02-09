@@ -75,7 +75,7 @@ class StatusEndpointViewsTestCase(TestCase):
         response = {
             'content': json.loads(response.content),
             'status': response.status_code,
-            }
+        }
 
         expected_response = {
             'content': 'There were no checks.',
@@ -83,4 +83,3 @@ class StatusEndpointViewsTestCase(TestCase):
         }
 
         self.assertEqual(response, expected_response)
-
