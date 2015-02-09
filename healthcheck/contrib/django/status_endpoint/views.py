@@ -33,6 +33,9 @@ def status(request):
 
     ok, details = HealthChecker(checks)()
 
+    if ok and not details:
+        details = 'There were no checks.'
+
     if not ok:
         return JsonResponseServerError(json.dumps(details))
 
