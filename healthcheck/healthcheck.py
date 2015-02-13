@@ -169,14 +169,15 @@ class HealthChecker(object):
         return overall_status, overall_details
 
     def _assess_overall_status(self):
+        if not self._checks:
+            return True
         failed_checks = [check for check in self._checks if not check.is_ok]
         failed_critical_checks = [
             check for check in failed_checks if check.is_critical]
 
         # If any of critical checks failed, or all checks failed, system
         # state is False (means "bad").
-        if self._checks and (failed_critical_checks
-                             or len(failed_checks) == len(self._checks)):
+        if failed_critical_checks or len(failed_checks) == len(self._checks):
             return False
 
         return True
