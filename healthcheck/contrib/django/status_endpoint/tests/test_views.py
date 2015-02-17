@@ -69,13 +69,17 @@ class StatusEndpointViewsTestCase(TestCase):
         STATUS_CHECK_DBS=False,
         STATUS_CHECK_FILES=()
     )
-    def test_no_checks_raises_500(self):
-        # Pending related issue: https://github.com/yola/healthcheck/issues/10
+    def test_no_checks_raises_200(self):
         request = self.factory.get(reverse(views.status))
         response = views.status(request)
-        response_json = json.loads(response.content)
-        self.assertTrue(
-            "quiesce file doesn't exist" not in response_json)
-        self.assertTrue(
-            'Django Databases Health Check' not in response_json)
-        self.assertEqual(response.status_code, 500)
+        response = {
+            'content': json.loads(response.content),
+            'status': response.status_code,
+        }
+
+        expected_response = {
+            'content': 'There were no checks.',
+            'status': 200,
+        }
+
+        self.assertEqual(response, expected_response)
