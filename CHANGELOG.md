@@ -1,8 +1,5 @@
 # [Changelog](https://github.com/yola/healthcheck)
 
-## 0.0.5
-* Return Ok if there are not checks.
-
 ## 0.0.4
 * Add `healthcheck.contrib.django.status_endpoint` contrib app, for easily
   using the library from a Django app.
