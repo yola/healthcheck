@@ -1,6 +1,7 @@
 HealthCheck
 ===========
 [![Build Status](https://api.travis-ci.org/yola/healthcheck.svg)](https://travis-ci.org/yola/healthcheck)
+[![Coverage Status](https://coveralls.io/repos/yola/healthcheck/badge.svg?branch=master)](https://coveralls.io/r/yola/healthcheck?branch=master)
 
 Classes and Django apps, which help Yola services do health checks.
 
