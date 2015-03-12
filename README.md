@@ -1,7 +1,6 @@
 HealthCheck
 ===========
 [![Build Status](https://api.travis-ci.org/yola/healthcheck.svg)](https://travis-ci.org/yola/healthcheck)
-[![PyPI version](https://badge.fury.io/py/healthcheck.svg)](http://badge.fury.io/py/healthcheck)
 
 Classes and Django apps, which help Yola services do health checks.
 
