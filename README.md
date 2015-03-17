@@ -65,7 +65,7 @@ Using the Django app:
     )
 ```
 
-2. Include the polls URLconf in your project urls.py like this:
+2. Include the `status_endpoint` URLconf in your project urls.py like this:
 
 ```
     url(r'^status/', include('healthcheck.contrib.django.status_endpoint.urls'))
