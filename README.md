@@ -1,5 +1,7 @@
 HealthCheck
 ===========
+[![Build Status](https://api.travis-ci.org/yola/healthcheck.svg)](https://travis-ci.org/yola/healthcheck)
+[![Coverage Status](https://coveralls.io/repos/yola/healthcheck/badge.svg?branch=master)](https://coveralls.io/r/yola/healthcheck?branch=master)
 
 Classes and Django apps, which help Yola services do health checks.
 
@@ -63,7 +65,7 @@ Using the Django app:
     )
 ```
 
-2. Include the polls URLconf in your project urls.py like this:
+2. Include the `status_endpoint` URLconf in your project urls.py like this:
 
 ```
     url(r'^status/', include('healthcheck.contrib.django.status_endpoint.urls'))

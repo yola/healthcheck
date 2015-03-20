@@ -111,10 +111,10 @@ class TestListHealthCheck(TestCase):
         check = MyListHealthCheck()
         check.mock_items = (1, 2, 3)
         check.check_item = lambda item: (True,
-                                         {item: '{} tested'.format(item)})
+                                         {item: '{0} tested'.format(item)})
         check.run()
         self.assertEqual(check.is_ok, True)
-        expected_details = dict([(item, '{} tested'.format(item))
+        expected_details = dict([(item, '{0} tested'.format(item))
                                  for item in (1, 2, 3)])
         self.assertEqual(check.details, expected_details)
 

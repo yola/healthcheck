@@ -1,35 +1,20 @@
 import json
 import os
 
+os.environ['DJANGO_SETTINGS_MODULE'] = 'test_settings'
+
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import connections
-from django.test import TestCase, override_settings
+from django.test import TestCase
 from django.test.client import RequestFactory
+from django.test.utils import override_settings
 
 from healthcheck.contrib.django.status_endpoint import views
 
 
 if not settings.configured:
-    settings.configure(
-        DATABASE_ENGINE='sqlite3',
-        DATABASES={
-            'default': {
-                'NAME': ':memory:',
-                'ENGINE': 'django.db.backends.sqlite3',
-                'TEST_NAME': ':memory:',
-            },
-        },
-        DATABASE_NAME=':memory:',
-        TEST_DATABASE_NAME=':memory:',
-        INSTALLED_APPS=['healthcheck.contrib.django.status_endpoint'],
-        ROOT_URLCONF='',
-        DEBUG=False,
-        SITE_ID=1,
-        TEMPLATE_DEBUG=True,
-        PROJECT_ROOT=os.path.dirname(os.path.abspath(__file__)),
-        ALLOWED_HOSTS=['*'],
-    )
+    settings.configure()
 
 
 class StatusEndpointViewsTestCase(TestCase):
