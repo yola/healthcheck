@@ -1,5 +1,9 @@
 # [Changelog](https://github.com/yola/healthcheck)
 
+## 0.0.7
+* Updated requirements.txt to include funcsigs and restrict mock updates.
+* Added default to prevent `AttributeError` if `STATUS_CHECK_FILES` setting is missing.
+
 ## 0.0.6
 * Bump version in order to remove mistakenly added debug code that was never
   committed to git.
