@@ -1,7 +1,8 @@
 # [Changelog](https://github.com/yola/healthcheck)
 
 ## 0.0.6
-* Remove debug statement.
+* Bump version in order to remove mistakenly added debug code that was never
+  committed to git.
 
 ## 0.0.5
 * Return Ok if there are not checks.

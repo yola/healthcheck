@@ -22,6 +22,7 @@ class JsonResponseServerError(JsonResponse):
 @require_http_methods(['GET'])
 def status(request):
     checks = []
+
     if getattr(settings, 'STATUS_CHECK_DBS', True):
         checks.append(DjangoDBsHealthCheck())
 
