@@ -26,7 +26,7 @@ def status(request):
     if getattr(settings, 'STATUS_CHECK_DBS', True):
         checks.append(DjangoDBsHealthCheck())
 
-    files_to_check = getattr(settings, 'STATUS_CHECK_FILES')
+    files_to_check = getattr(settings, 'STATUS_CHECK_FILES', None)
     if files_to_check:
         checks.append(FilesDontExistHealthCheck(
             files_to_check, check_id="quiesce file doesn't exist"))

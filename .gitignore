@@ -10,6 +10,8 @@
 /test_build
 /virtualenv
 /virtualenv.tar.gz
+.eggs/
+healthcheck.egg-info/
 
 # Ignore data directory (used for persistent files)
 /data
