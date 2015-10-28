@@ -1,5 +1,8 @@
 # [Changelog](https://github.com/yola/healthcheck)
 
+## 0.0.6
+* Remove debug statement.
+
 ## 0.0.5
 * Return Ok if there are not checks.
 
