@@ -12,7 +12,6 @@
 /virtualenv.tar.gz
 .eggs/
 healthcheck.egg-info/
-.idea/
 
 # Ignore data directory (used for persistent files)
 /data
