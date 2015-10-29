@@ -204,5 +204,5 @@ def _file_exists(path):
         elif e.errno == errno.ENOENT:
             return False
 
-        # Unkown case
+        # Unknown case
         raise
