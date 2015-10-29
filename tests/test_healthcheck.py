@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from tempfile import NamedTemporaryFile
+import errno
 from unittest2 import TestCase
 
 from mock import patch
@@ -148,6 +149,25 @@ class TestFilesExistHealthCheck(TestCase):
         self.assertFalse(check.is_ok)
         self.assertEqual(check.details, {file1: 'exists',
                                          'file2': 'NO SUCH FILE'})
+
+    @patch('os.stat')
+    def test_ok_if_file_exists_with_wrong_permissions(self, stat_mock):
+        def permission_denied_stat(_):
+            err = OSError()
+            err.errno = errno.EACCES
+            raise err
+        stat_mock.side_effect = permission_denied_stat
+        self.test_ok_if_all_files_exist()
+
+    @patch('os.stat')
+    def test_error_if_unknown_exception_occurs(self, stat_mock):
+        def permission_denied_stat(_):
+            err = OSError()
+            err.errno = 99999  # i.e. an unknown error
+            raise err
+        stat_mock.side_effect = permission_denied_stat
+        with self.assertRaises(OSError):
+            self.test_ok_if_all_files_exist()
 
 
 class TestFilesDontExistHealthCheck(TestCase):
