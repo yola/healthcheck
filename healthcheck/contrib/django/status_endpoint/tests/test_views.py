@@ -68,3 +68,29 @@ class StatusEndpointViewsTestCase(TestCase):
         }
 
         self.assertEqual(response, expected_response)
+
+    @override_settings(
+        STATUS_CHECK_DBS=False,
+        STATUS_CHECK_FILES=('/usr/bin/env',)
+    )
+    def test_failed_check(self):
+        request = self.factory.get(reverse(views.status))
+        response = views.status(request)
+        response = {
+            'content': json.loads(response.content),
+            'status': response.status_code,
+        }
+
+        expected_response = {
+            'content': {
+                "quiesce file doesn't exist": {
+                    'details': {
+                        '/usr/bin/env': 'FILE EXISTS'
+                    },
+                    'status': 'FAILED'
+                }
+            },
+            'status': 500,
+        }
+
+        self.assertEqual(response, expected_response)
