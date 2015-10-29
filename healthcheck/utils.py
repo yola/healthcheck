@@ -14,7 +14,7 @@ def file_exists(path):
         return True
     except OSError as e:
 
-        # Permission denied: someone chose the wrong permissions but it exists
+        # Permission denied: someone chose the wrong permissions but it exists.
         if e.errno == errno.EACCES:
             return True
 
