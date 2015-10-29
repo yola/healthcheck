@@ -140,7 +140,7 @@ class TestFilesExistHealthCheck(TestCase):
         self.assertEqual(check.details, {file1: 'exists',
                                          file2: 'exists'})
 
-    def test_ok_if_at_least_one_file_doesnt_exist(self):
+    def test_not_ok_if_at_least_one_file_doesnt_exist(self):
         tmpfile1 = NamedTemporaryFile()
         file1 = tmpfile1.name
         check = FilesExistHealthCheck((file1, 'file2'), check_id='checkid')
@@ -151,7 +151,7 @@ class TestFilesExistHealthCheck(TestCase):
 
 
 class TestFilesDontExistHealthCheck(TestCase):
-    def test_ok_if_all_files_exist(self):
+    def test_ok_if_all_files_dont_exist(self):
         check = FilesDontExistHealthCheck(('file1', 'file2'),
                                           check_id='checkid')
         check.run()
@@ -159,7 +159,7 @@ class TestFilesDontExistHealthCheck(TestCase):
         self.assertEqual(check.details, {'file1': 'no such file',
                                          'file2': 'no such file'})
 
-    def test_ok_if_at_least_one_file_doesnt_exist(self):
+    def test_not_ok_if_at_least_one_file_exists(self):
         tmpfile2 = NamedTemporaryFile()
         file2 = tmpfile2.name
         check = FilesDontExistHealthCheck(('file1', file2),
