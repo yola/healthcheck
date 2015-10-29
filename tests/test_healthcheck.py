@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from tempfile import NamedTemporaryFile
 from unittest2 import TestCase
 
 from mock import patch
@@ -128,29 +129,29 @@ class TestListHealthCheck(TestCase):
 
 
 class TestFilesExistHealthCheck(TestCase):
-    @patch('os.path.isfile')
-    def test_ok_if_all_files_exist(self, is_file_mock):
-        is_file_mock.return_value = True
-        check = FilesExistHealthCheck(('file1', 'file2'), check_id='checkid')
+    def test_ok_if_all_files_exist(self):
+        tmpfile1 = NamedTemporaryFile()
+        tmpfile2 = NamedTemporaryFile()
+        file1 = tmpfile1.name
+        file2 = tmpfile2.name
+        check = FilesExistHealthCheck((file1, file2), check_id='checkid')
         check.run()
         self.assertTrue(check.is_ok)
-        self.assertEqual(check.details, {'file1': 'exists',
-                                         'file2': 'exists'})
+        self.assertEqual(check.details, {file1: 'exists',
+                                         file2: 'exists'})
 
-    @patch('os.path.isfile')
-    def test_ok_if_at_least_one_file_doesnt_exist(self, is_file_mock):
-        is_file_mock.side_effect = lambda fn: False if fn == 'file2' else True
-        check = FilesExistHealthCheck(('file1', 'file2'), check_id='checkid')
+    def test_ok_if_at_least_one_file_doesnt_exist(self):
+        tmpfile1 = NamedTemporaryFile()
+        file1 = tmpfile1.name
+        check = FilesExistHealthCheck((file1, 'file2'), check_id='checkid')
         check.run()
         self.assertFalse(check.is_ok)
-        self.assertEqual(check.details, {'file1': 'exists',
+        self.assertEqual(check.details, {file1: 'exists',
                                          'file2': 'NO SUCH FILE'})
 
 
 class TestFilesDontExistHealthCheck(TestCase):
-    @patch('os.path.isfile')
-    def test_ok_if_all_files_exist(self, is_file_mock):
-        is_file_mock.return_value = False
+    def test_ok_if_all_files_exist(self):
         check = FilesDontExistHealthCheck(('file1', 'file2'),
                                           check_id='checkid')
         check.run()
@@ -158,15 +159,15 @@ class TestFilesDontExistHealthCheck(TestCase):
         self.assertEqual(check.details, {'file1': 'no such file',
                                          'file2': 'no such file'})
 
-    @patch('os.path.isfile')
-    def test_ok_if_at_least_one_file_doesnt_exist(self, is_file_mock):
-        is_file_mock.side_effect = lambda fn: True if fn == 'file2' else False
-        check = FilesDontExistHealthCheck(('file1', 'file2'),
+    def test_ok_if_at_least_one_file_doesnt_exist(self):
+        tmpfile2 = NamedTemporaryFile()
+        file2 = tmpfile2.name
+        check = FilesDontExistHealthCheck(('file1', file2),
                                           check_id='checkid')
         check.run()
         self.assertFalse(check.is_ok)
         self.assertEqual(check.details, {'file1': 'no such file',
-                                         'file2': 'FILE EXISTS'})
+                                         file2: 'FILE EXISTS'})
 
 
 class TestHealthChecker(TestCase):
