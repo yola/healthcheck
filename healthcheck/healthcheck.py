@@ -185,11 +185,12 @@ class HealthChecker(object):
 
 
 def _file_exists(path):
-    """Returns True if a file exists at `path` (even if it can't be read),
+    """Return True if a file exists at `path` (even if it can't be read),
     otherwise False.
 
     This is different from os.path.isfile and os.path.exists which return
-    False if a file exists but the user doesn't have permission to read it."""
+    False if a file exists but the user doesn't have permission to read it.
+    """
     try:
         os.stat(path)
         return True
