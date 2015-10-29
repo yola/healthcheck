@@ -152,20 +152,12 @@ class TestFilesExistHealthCheck(TestCase):
 
     @patch('os.stat')
     def test_ok_if_file_exists_with_wrong_permissions(self, stat_mock):
-        def permission_denied_stat(_):
-            err = OSError()
-            err.errno = errno.EACCES
-            raise err
-        stat_mock.side_effect = permission_denied_stat
+        stat_mock.side_effect = OSError(errno.EACCES, 'Permission denied')
         self.test_ok_if_all_files_exist()
 
     @patch('os.stat')
     def test_error_if_unknown_exception_occurs(self, stat_mock):
-        def permission_denied_stat(_):
-            err = OSError()
-            err.errno = 99999  # i.e. an unknown error
-            raise err
-        stat_mock.side_effect = permission_denied_stat
+        stat_mock.side_effect = OSError(9999, 'Unknown error')
         with self.assertRaises(OSError):
             self.test_ok_if_all_files_exist()
 
