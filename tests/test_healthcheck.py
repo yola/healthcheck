@@ -179,7 +179,8 @@ class TestFilesHealthCheckWithError(TestCase):
             check = check_type(('file',), check_id='checkid')
             check.run()
             self.assertFalse(check.is_ok)
-            self.assertEqual(check.details, {'file': 'ERROR: Permission denied'})
+            self.assertEqual(check.details,
+                             {'file': 'ERROR: Permission denied'})
 
 
 class TestHealthChecker(TestCase):
