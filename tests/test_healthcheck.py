@@ -150,14 +150,6 @@ class TestFilesExistHealthCheck(TestCase):
         self.assertEqual(check.details, {file1: 'exists',
                                          'file2': 'NO SUCH FILE'})
 
-    @patch('os.stat')
-    def test_ok_if_file_exists_with_wrong_permissions(self, stat_mock):
-        stat_mock.side_effect = OSError(errno.EACCES, 'Permission denied')
-        check = FilesExistHealthCheck(('file',), check_id='checkid')
-        check.run()
-        self.assertFalse(check.is_ok)
-        self.assertEqual(check.details, {'file': 'ERROR: Permission denied'})
-
 
 class TestFilesDontExistHealthCheck(TestCase):
     def test_ok_if_all_files_dont_exist(self):
@@ -177,6 +169,17 @@ class TestFilesDontExistHealthCheck(TestCase):
         self.assertFalse(check.is_ok)
         self.assertEqual(check.details, {'file1': 'no such file',
                                          file2: 'FILE EXISTS'})
+
+
+class TestFilesHealthCheckWithError(TestCase):
+    @patch('os.stat')
+    def test_error_when_checking_if_files_exist(self, stat_mock):
+        stat_mock.side_effect = OSError(errno.EACCES, 'Permission denied')
+        for check_type in (FilesExistHealthCheck, FilesDontExistHealthCheck):
+            check = check_type(('file',), check_id='checkid')
+            check.run()
+            self.assertFalse(check.is_ok)
+            self.assertEqual(check.details, {'file': 'ERROR: Permission denied'})
 
 
 class TestHealthChecker(TestCase):
