@@ -37,6 +37,6 @@ def status(request):
         details = 'There were no checks.'
 
     if not ok:
-        return JsonResponseServerError(json.dumps(details))
+        return JsonResponseServerError(details)
 
     return JsonResponse(details)
