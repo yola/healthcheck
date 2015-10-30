@@ -1,5 +1,6 @@
+from __future__ import absolute_import
 import abc
-import utils
+from healthcheck.utils import file_exists
 
 
 class HealthCheck(object):
@@ -116,18 +117,30 @@ class FilesExistHealthCheck(ListHealthCheck):
     """Fails if at least one of passed files doesn't exist."""
 
     def check_item(self, filename):
-        file_exists = utils.file_exists(filename)
-        details = {filename: 'exists' if file_exists else 'NO SUCH FILE'}
-        return file_exists, details
+        try:
+            ok = file_exists(filename)
+        except OSError as e:
+            ok = False
+            description = 'ERROR: ' + str(e.strerror)
+        else:
+            description = 'exists' if ok else 'NO SUCH FILE'
+        details = {filename: description}
+        return ok, details
 
 
 class FilesDontExistHealthCheck(ListHealthCheck):
     """Fails if at least one of passed files exists."""
 
     def check_item(self, filename):
-        file_exists = utils.file_exists(filename)
-        details = {filename: 'FILE EXISTS' if file_exists else 'no such file'}
-        return not file_exists, details
+        try:
+            ok = not file_exists(filename)
+        except OSError as e:
+            ok = False
+            description = 'ERROR: ' + str(e.strerror)
+        else:
+            description = 'no such file' if ok else 'FILE EXISTS'
+        details = {filename: description}
+        return ok, details
 
 
 class HealthChecker(object):

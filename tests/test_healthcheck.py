@@ -153,13 +153,10 @@ class TestFilesExistHealthCheck(TestCase):
     @patch('os.stat')
     def test_ok_if_file_exists_with_wrong_permissions(self, stat_mock):
         stat_mock.side_effect = OSError(errno.EACCES, 'Permission denied')
-        self.test_ok_if_all_files_exist()
-
-    @patch('os.stat')
-    def test_error_if_unknown_exception_occurs(self, stat_mock):
-        stat_mock.side_effect = OSError(9999, 'Unknown error')
-        with self.assertRaises(OSError):
-            self.test_ok_if_all_files_exist()
+        check = FilesExistHealthCheck(('file',), check_id='checkid')
+        check.run()
+        self.assertFalse(check.is_ok)
+        self.assertEqual(check.details, {'file': 'ERROR: Permission denied'})
 
 
 class TestFilesDontExistHealthCheck(TestCase):
