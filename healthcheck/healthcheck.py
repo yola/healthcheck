@@ -1,12 +1,9 @@
-import abc
-import os.path
+from __future__ import absolute_import
+from healthcheck.utils import file_exists
 
 
-class HealthCheck(object):
+class HealthCheck():
     """Base class for all checks."""
-
-    __metaclass__ = abc.ABCMeta
-
     check_id = None
 
     def __init__(self, is_critical=True, check_id=None):
@@ -19,22 +16,21 @@ class HealthCheck(object):
                 system health considered as "NOT ok". Otherwise,
         """
         self.is_critical = is_critical
-
         if check_id:
             self.check_id = check_id
 
         if self.check_id is None:
             raise ValueError('You must specify check_id for the check %s.' %
-                             (self,))
+                             (self.__class__.__name__,))
 
         self._ok = None
         self._details = {}
 
-    @abc.abstractmethod
     def run(self):
         """If you create your own HealthCheck, it should implement .run()
         method, which sets self._ok and self._details properties."""
-        pass
+        raise ValueError('You must override "run" method for check %s.' %
+                             (self.__class__.__name__,))
 
     @property
     def is_ok(self):
@@ -62,7 +58,6 @@ class ListHealthCheck(HealthCheck):
     ------
         See examples are below - DjangoDBsHealthCheck and FilesExistHealthCheck
     """
-    __metaclass__ = abc.ABCMeta
 
     def __init__(self, items=None, **kwargs):
         super(ListHealthCheck, self).__init__(**kwargs)
@@ -84,7 +79,6 @@ class ListHealthCheck(HealthCheck):
 
             self._details.update(item_details)
 
-    @abc.abstractmethod
     def check_item(self, item):
         """ This is called to check each item. It must return the following:
         <item_check_status>, {<item_id>: <item_check_details}
@@ -116,18 +110,30 @@ class FilesExistHealthCheck(ListHealthCheck):
     """Fails if at least one of passed files doesn't exist."""
 
     def check_item(self, filename):
-        file_exists = os.path.isfile(filename)
-        details = {filename: 'exists' if file_exists else 'NO SUCH FILE'}
-        return file_exists, details
+        try:
+            ok = file_exists(filename)
+        except OSError as e:
+            ok = False
+            description = 'ERROR: ' + str(e.strerror)
+        else:
+            description = 'exists' if ok else 'NO SUCH FILE'
+        details = {filename: description}
+        return ok, details
 
 
 class FilesDontExistHealthCheck(ListHealthCheck):
     """Fails if at least one of passed files exists."""
 
     def check_item(self, filename):
-        file_exists = os.path.isfile(filename)
-        details = {filename: 'FILE EXISTS' if file_exists else 'no such file'}
-        return not file_exists, details
+        try:
+            ok = not file_exists(filename)
+        except OSError as e:
+            ok = False
+            description = 'ERROR: ' + str(e.strerror)
+        else:
+            description = 'no such file' if ok else 'FILE EXISTS'
+        details = {filename: description}
+        return ok, details
 
 
 class HealthChecker(object):
