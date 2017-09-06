@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-from tempfile import NamedTemporaryFile
 import errno
-from unittest2 import TestCase
+import os
+from tempfile import NamedTemporaryFile
 
+from unittest2 import TestCase
+from django.test.utils import override_settings
 from mock import patch
 
 from healthcheck import (HealthChecker, HealthCheck, ListHealthCheck,
@@ -25,7 +27,7 @@ class TestHealthCheck(TestCase):
     def test_cant_create_healthcheck_without_run_method(self):
         class MyCheck(HealthCheck):
             check_id = 'check_id'
-        print(MyCheck().__class__.__name__)
+
         self.assertRaisesRegexp(
             ValueError,
             'You must override "run" method for check MyCheck', MyCheck().run

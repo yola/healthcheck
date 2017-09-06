@@ -29,8 +29,10 @@ class HealthCheck():
     def run(self):
         """If you create your own HealthCheck, it should implement .run()
         method, which sets self._ok and self._details properties."""
-        raise ValueError('You must override "run" method for check %s.' %
-                             (self.__class__.__name__,))
+        raise ValueError(
+            'You must override "run" method for check %s.' %
+            (self.__class__.__name__,)
+        )
 
     @property
     def is_ok(self):

@@ -3,18 +3,13 @@ import os
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'test_settings'
 
-from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import connections
-from django.test import TestCase
+from django.test.testcases import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
 
 from healthcheck.contrib.django.status_endpoint import views
-
-
-if not settings.configured:
-    settings.configure()
 
 
 class StatusEndpointViewsTestCase(TestCase):
@@ -39,7 +34,7 @@ class StatusEndpointViewsTestCase(TestCase):
     def test_dont_check_files(self):
         request = self.factory.get(reverse(views.status))
         response = views.status(request)
-        response_json = json.loads(response.content)
+        response_json = json.loads(response.content.decode())
         self.assertTrue(
             "quiesce file doesn't exist" not in response_json)
         self.assertTrue(
@@ -58,7 +53,7 @@ class StatusEndpointViewsTestCase(TestCase):
         request = self.factory.get(reverse(views.status))
         response = views.status(request)
         response = {
-            'content': json.loads(response.content),
+            'content': json.loads(response.content.decode()),
             'status': response.status_code,
         }
 
@@ -77,7 +72,7 @@ class StatusEndpointViewsTestCase(TestCase):
         request = self.factory.get(reverse(views.status))
         response = views.status(request)
         response = {
-            'content': json.loads(response.content),
+            'content': json.loads(response.content.decode()),
             'status': response.status_code,
         }
 
