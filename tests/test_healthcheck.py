@@ -22,15 +22,14 @@ class TestHealthCheck(TestCase):
     def setUp(self):
         self.check = MyCheck()
 
-    def test_cant_create_abstract_healthcheck(self):
-        self.assertRaisesRegexp(TypeError, 'Can\'t instantiate', HealthCheck,
-                                dict(check_id='111'))
-
     def test_cant_create_healthcheck_without_run_method(self):
         class MyCheck(HealthCheck):
-            pass
-
-        self.assertRaisesRegexp(TypeError, 'Can\'t instantiate', MyCheck)
+            check_id = 'check_id'
+        print(MyCheck().__class__.__name__)
+        self.assertRaisesRegexp(
+            ValueError,
+            'You must override "run" method for check MyCheck', MyCheck().run
+        )
 
     def test_cant_create_healthcheck_without_id(self):
         class MyCheck(HealthCheck):

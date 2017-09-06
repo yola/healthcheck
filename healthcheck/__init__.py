@@ -3,6 +3,6 @@ __version__ = '0.0.7'
 __url__ = 'https://github.com/yola/healthcheck'
 
 
-from healthcheck import (HealthChecker, HealthCheck, ListHealthCheck,
+from .healthcheck import (HealthChecker, HealthCheck, ListHealthCheck,
                          DjangoDBsHealthCheck, FilesExistHealthCheck,
                          FilesDontExistHealthCheck)
