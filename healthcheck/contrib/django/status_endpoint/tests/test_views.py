@@ -1,7 +1,6 @@
 import json
 import os
 
-#os.environ['DJANGO_SETTINGS_MODULE'] = 'healthcheck.contrib.django.status_endpoint.settings'  ## NOQA
 
 from django.core.urlresolvers import reverse
 from django.db import connections
