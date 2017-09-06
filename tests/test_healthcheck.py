@@ -4,7 +4,6 @@ import os
 from tempfile import NamedTemporaryFile
 
 from unittest2 import TestCase
-from django.test.utils import override_settings
 from mock import patch
 
 from healthcheck import (HealthChecker, HealthCheck, ListHealthCheck,

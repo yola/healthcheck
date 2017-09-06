@@ -1,11 +1,11 @@
 import json
 import os
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'test_settings'
+#os.environ['DJANGO_SETTINGS_MODULE'] = 'healthcheck.contrib.django.status_endpoint.settings'  ## NOQA
 
 from django.core.urlresolvers import reverse
 from django.db import connections
-from django.test.testcases import TestCase
+from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
 

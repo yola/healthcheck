@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from healthcheck.utils import file_exists
 
 
-class HealthCheck():
+class HealthCheck(object):
     """Base class for all checks."""
     check_id = None
 
