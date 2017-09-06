@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import errno
-import os
 from tempfile import NamedTemporaryFile
 
 from unittest2 import TestCase
