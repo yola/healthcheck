@@ -4,7 +4,7 @@ from django.conf import settings
 from django.views.decorators.http import require_http_methods
 from django.http import HttpResponse
 
-from healthcheck.healthcheck import (
+from healthcheck import (
     DjangoDBsHealthCheck, FilesDontExistHealthCheck, HealthChecker)
 
 
