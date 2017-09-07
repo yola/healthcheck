@@ -1,5 +1,5 @@
 coverage == 3.7.1
-django>=1.4,< 1.7
+django>=1.7,<1.12
 mock<1.2.0
 nose<2.0.0
 python-coveralls==2.5.0
