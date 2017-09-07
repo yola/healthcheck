@@ -1,13 +1,8 @@
-from __future__ import absolute_import
-import abc
 from healthcheck.utils import file_exists
 
 
 class HealthCheck(object):
     """Base class for all checks."""
-
-    __metaclass__ = abc.ABCMeta
-
     check_id = None
 
     def __init__(self, is_critical=True, check_id=None):
@@ -20,22 +15,23 @@ class HealthCheck(object):
                 system health considered as "NOT ok". Otherwise,
         """
         self.is_critical = is_critical
-
         if check_id:
             self.check_id = check_id
 
         if self.check_id is None:
             raise ValueError('You must specify check_id for the check %s.' %
-                             (self,))
+                             (self.__class__.__name__,))
 
         self._ok = None
         self._details = {}
 
-    @abc.abstractmethod
     def run(self):
         """If you create your own HealthCheck, it should implement .run()
         method, which sets self._ok and self._details properties."""
-        pass
+        raise ValueError(
+            'You must override "run" method for check %s.' %
+            (self.__class__.__name__,)
+        )
 
     @property
     def is_ok(self):
@@ -63,7 +59,6 @@ class ListHealthCheck(HealthCheck):
     ------
         See examples are below - DjangoDBsHealthCheck and FilesExistHealthCheck
     """
-    __metaclass__ = abc.ABCMeta
 
     def __init__(self, items=None, **kwargs):
         super(ListHealthCheck, self).__init__(**kwargs)
@@ -85,7 +80,6 @@ class ListHealthCheck(HealthCheck):
 
             self._details.update(item_details)
 
-    @abc.abstractmethod
     def check_item(self, item):
         """ This is called to check each item. It must return the following:
         <item_check_status>, {<item_id>: <item_check_details}

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-from tempfile import NamedTemporaryFile
 import errno
-from unittest2 import TestCase
+from tempfile import NamedTemporaryFile
+from unittest import TestCase
 
 from mock import patch
 
-from healthcheck import (HealthChecker, HealthCheck, ListHealthCheck,
-                         FilesExistHealthCheck, FilesDontExistHealthCheck)
+from healthcheck.checks import (
+    FilesDontExistHealthCheck, FilesExistHealthCheck,
+    HealthCheck, HealthChecker, ListHealthCheck)
 
 
 class MyCheck(HealthCheck):
@@ -22,15 +23,14 @@ class TestHealthCheck(TestCase):
     def setUp(self):
         self.check = MyCheck()
 
-    def test_cant_create_abstract_healthcheck(self):
-        self.assertRaisesRegexp(TypeError, 'Can\'t instantiate', HealthCheck,
-                                dict(check_id='111'))
-
     def test_cant_create_healthcheck_without_run_method(self):
         class MyCheck(HealthCheck):
-            pass
+            check_id = 'check_id'
 
-        self.assertRaisesRegexp(TypeError, 'Can\'t instantiate', MyCheck)
+        self.assertRaisesRegexp(
+            ValueError,
+            'You must override "run" method for check MyCheck', MyCheck().run
+        )
 
     def test_cant_create_healthcheck_without_id(self):
         class MyCheck(HealthCheck):

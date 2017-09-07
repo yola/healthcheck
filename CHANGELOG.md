@@ -1,5 +1,8 @@
 # [Changelog](https://github.com/yola/healthcheck)
 
+## 0.1.0
+* Removed Python 2.6 support, added Python 3.5 support.
+
 ## 0.0.7
 * Updated requirements.txt to include funcsigs and restrict mock updates.
 * Added default to prevent `AttributeError` if `STATUS_CHECK_FILES` setting is missing.
