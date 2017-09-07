@@ -6,8 +6,8 @@ from unittest import TestCase
 from mock import patch
 
 from healthcheck.checks import (
-    HealthChecker, HealthCheck, ListHealthCheck,
-    FilesExistHealthCheck, FilesDontExistHealthCheck)
+    FilesDontExistHealthCheck, FilesExistHealthCheck,
+    HealthCheck, HealthChecker, ListHealthCheck)
 
 
 class MyCheck(HealthCheck):
