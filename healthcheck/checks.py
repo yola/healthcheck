@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 from healthcheck.utils import file_exists
 
 

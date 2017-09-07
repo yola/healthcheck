@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import errno
 from tempfile import NamedTemporaryFile
+from unittest import TestCase
 
-from unittest2 import TestCase
 from mock import patch
 
-from healthcheck import (HealthChecker, HealthCheck, ListHealthCheck,
-                         FilesExistHealthCheck, FilesDontExistHealthCheck)
+from healthcheck.checks import (
+    HealthChecker, HealthCheck, ListHealthCheck,
+    FilesExistHealthCheck, FilesDontExistHealthCheck)
 
 
 class MyCheck(HealthCheck):
