@@ -66,14 +66,14 @@ class ListHealthCheck(HealthCheck):
         if not items and not self.items:
             raise ValueError('You have to specify items inside class or '
                              'pass items list on object construction')
+        self.kwarg_items = items
 
-        self._items = items if items is not None else self.items
 
     def run(self):
         self._ok = True
         self._details = {}
 
-        for item in self._items:
+        for item in self.kwarg_items or self.items:
             item_ok, item_details = self.check_item(item)
             if not item_ok:
                 self._ok = False
