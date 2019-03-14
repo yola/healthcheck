@@ -98,3 +98,10 @@ Running Tests
 -------------
 
 `cd healthcheck; python setup.py test`
+
+If you have PostgreSQL available, you can test against a postgres DB, with
+`pg_virtualenv`.
+
+If you have MySQL available, you can test against a MySQL DB, with
+`my_virtualenv`, or export `MYSQL_HOST=localhost`. It requires a
+database named "test" to exist.
