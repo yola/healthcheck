@@ -1,5 +1,7 @@
 import json
 import os
+from threading import Thread
+from unittest import skipIf
 
 
 from django.core.urlresolvers import reverse
@@ -8,6 +10,7 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
 
+from healthcheck.checks import DjangoDBsHealthCheck
 from healthcheck.contrib.django.status_endpoint import views
 
 
@@ -88,3 +91,26 @@ class StatusEndpointViewsTestCase(TestCase):
         }
 
         self.assertEqual(response, expected_response)
+
+    @override_settings(
+        STATUS_CHECK_DBS=True,
+        STATUS_CHECK_FILES=()
+    )
+    @skipIf('MYSQL_HOST' not in os.environ, 'Test requires MySQL')
+    def test_dbs_thread_local(self):
+        ddb = DjangoDBsHealthCheck()
+        threads = []
+        request = self.factory.get(reverse(views.status))
+        response = views.status(request)
+
+        for i in range(100):
+            thread = Thread(target=ddb.run)
+            thread.start()
+            threads.append(thread)
+
+        for thread in threads:
+            thread.join()  # Wait for request to be handled
+
+        request = self.factory.get(reverse(views.status))
+        response = views.status(request)
+        self.assertEqual(response.status_code, 200)
