@@ -104,9 +104,10 @@ class DjangoDBsHealthCheck(ListHealthCheck):
         from django.db.utils import OperationalError
         try:
             connection.ensure_connection()
-            db_ok = connection.is_usable()
         except OperationalError:
             db_ok = False
+        else:
+            db_ok = connection.is_usable()
         details = {connection.alias: 'ok' if db_ok else 'FAILED'}
         return db_ok, details
 
