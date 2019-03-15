@@ -202,7 +202,6 @@ class TestDjangoDBsHealthCheck(TestCase):
         connection_mock.ensure_connection.assert_called_once_with()
         connection_mock.is_usable.assert_called_once_with()
 
-
     @patch('django.db.connections')
     def test_fails_when_ensure_connection_fail(self, connections_mock):
         connections_mock.all.return_value = [
