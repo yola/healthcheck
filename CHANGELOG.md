@@ -1,5 +1,8 @@
 # [Changelog](https://github.com/yola/healthcheck)
 
+## 0.1.3
+* Support sharing DjangoDBsHealthCheck objects across threads.
+
 ## 0.1.2
 * Added catching OperationalError exception for django dbs check.
 
