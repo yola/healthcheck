@@ -193,11 +193,15 @@ class TestDjangoDBsHealthCheck(TestCase):
 
     @patch('django.db.connections')
     def test_returns_ok(self, connections_mock):
-        connections_mock.all.return_value = [Mock(alias='db_name')]
+        connection_mock = Mock(alias='db_name')
+        connections_mock.all.return_value = [connection_mock]
         check = DjangoDBsHealthCheck()
         check.run()
         self.assertTrue(check.is_ok)
         self.assertEqual(check.details, {'db_name': 'ok'})
+        connection_mock.ensure_connection.assert_called_once_with()
+        connection_mock.is_usable.assert_called_once_with()
+
 
     @patch('django.db.connections')
     def test_fails_when_ensure_connection_fail(self, connections_mock):
