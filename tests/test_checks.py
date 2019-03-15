@@ -3,11 +3,17 @@ import errno
 from tempfile import NamedTemporaryFile
 from unittest import TestCase
 
-from mock import patch
+from django.db import OperationalError
+from mock import Mock, patch
 
 from healthcheck.checks import (
-    FilesDontExistHealthCheck, FilesExistHealthCheck,
-    HealthCheck, HealthChecker, ListHealthCheck)
+    DjangoDBsHealthCheck,
+    FilesDontExistHealthCheck,
+    FilesExistHealthCheck,
+    HealthCheck,
+    HealthChecker,
+    ListHealthCheck,
+)
 
 
 class MyCheck(HealthCheck):
@@ -181,6 +187,42 @@ class TestFilesHealthCheckWithError(TestCase):
             self.assertFalse(check.is_ok)
             self.assertEqual(check.details,
                              {'file': 'ERROR: Permission denied'})
+
+
+class TestDjangoDBsHealthCheck(TestCase):
+
+    @patch('django.db.connections')
+    def test_returns_ok(self, connections_mock):
+        connection_mock = Mock(alias='db_name')
+        connections_mock.all.return_value = [connection_mock]
+        check = DjangoDBsHealthCheck()
+        check.run()
+        self.assertTrue(check.is_ok)
+        self.assertEqual(check.details, {'db_name': 'ok'})
+        connection_mock.ensure_connection.assert_called_once_with()
+        connection_mock.is_usable.assert_called_once_with()
+
+    @patch('django.db.connections')
+    def test_fails_when_ensure_connection_fail(self, connections_mock):
+        connections_mock.all.return_value = [
+            Mock(alias='db_name',
+                 ensure_connection=Mock(side_effect=OperationalError()))
+        ]
+        check = DjangoDBsHealthCheck()
+        check.run()
+        self.assertFalse(check.is_ok)
+        self.assertEqual(check.details, {'db_name': 'FAILED'})
+
+    @patch('django.db.connections')
+    def test_fails_when_connection_is_not_usable(self, connections_mock):
+        connections_mock.all.return_value = [
+            Mock(alias='db_name',
+                 is_usable=Mock(return_value=False))
+        ]
+        check = DjangoDBsHealthCheck()
+        check.run()
+        self.assertFalse(check.is_ok)
+        self.assertEqual(check.details, {'db_name': 'FAILED'})
 
 
 class TestHealthChecker(TestCase):
