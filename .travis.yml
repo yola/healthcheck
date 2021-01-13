@@ -7,7 +7,7 @@ jobs:
     - name: "Python 3.5 on Xenial"
       python: "3.5"
       dist: "xenial"
-    - name: "Python 3.6 in Bionic"
+    - name: "Python 3.6 on Bionic"
       python: "3.6"
       dist: "bionic"
 install: "pip install -r requirements.txt"
