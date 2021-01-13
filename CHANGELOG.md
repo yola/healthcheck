@@ -1,5 +1,9 @@
 # [Changelog](https://github.com/yola/healthcheck)
 
+## 0.1.4
+* Drop Python 3.4.
+* Add support for Python 3.5 and 3.6.
+
 ## 0.1.3
 * Support sharing DjangoDBsHealthCheck objects across threads.
 
