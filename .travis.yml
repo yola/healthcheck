@@ -1,7 +1,15 @@
 language: python
-python:
-   - "2.7"
-   - "3.4"
+jobs:
+  include:
+    - name: "Python 2.7 on Xenial"
+      python: "2.7"
+      dist: "xenial"
+    - name: "Python 3.5 on Xenial"
+      python: "3.5"
+      dist: "xenial"
+    - name: "Python 3.6 on Bionic"
+      python: "3.6"
+      dist: "bionic"
 install: "pip install -r requirements.txt"
 script:
    - "nosetests --with-coverage --cover-package=healthcheck"

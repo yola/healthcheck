@@ -16,4 +16,9 @@ setup(
     packages=find_packages(exclude=('tests', '*.tests')),
     tests_require=test_requirements,
     test_suite='nose.collector',
+    classifiers=[
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+    ]
 )
