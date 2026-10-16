@@ -2,8 +2,6 @@
 from setuptools import find_packages, setup
 import healthcheck
 
-with open('requirements.txt') as requirements_file:
-    test_requirements = requirements_file.readlines()
 
 setup(
     name='healthcheck',
@@ -14,11 +12,10 @@ setup(
     license='MIT (Expat)',
     url=healthcheck.__url__,
     packages=find_packages(exclude=('tests', '*.tests')),
-    tests_require=test_requirements,
-    test_suite='nose.collector',
     classifiers=[
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
+        'Environment :: Console',
+        'Environment :: Web Environment',
+        'Programming Language :: Python :: 3',
+        'Topic :: Software Development :: Libraries'
     ]
 )

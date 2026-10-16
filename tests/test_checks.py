@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 import errno
 from tempfile import NamedTemporaryFile
 from unittest import TestCase
+from unittest.mock import Mock, patch
 
 from django.db import OperationalError
-from mock import Mock, patch
 
 from healthcheck.checks import (
     DjangoDBsHealthCheck,
